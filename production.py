@@ -2,9 +2,18 @@
 NeoPixels green while button B is being pressed."""
 from adafruit_circuitplayground import cp
 import time
+from digitalio import DigitalInOut, Direction, Pull
+import board
 
 cp.pixels.brightness = 1
 cp.pixels.fill((0, 0, 0))  # Turn off the NeoPixels if they're on!
+
+button_g = DigitalInOut(board.A4)
+button_g.direction = Direction.INPUT
+button_g.pull = Pull.UP
+
+def touch_g():
+    return not button_g.value
 
 def phone_sequence():
     #yellow sequence
@@ -38,5 +47,8 @@ while True:
         phone_sequence()
     else:
         cp.pixels.fill((0, 0, 0))
-
-
+        
+    if touch_g():
+        phone_sequence()
+    else:
+        cp.pixels.fill((0, 0, 0))
